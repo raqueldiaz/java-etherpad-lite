@@ -9,6 +9,8 @@ install and configure your own Etherpad Lite instance, and read the
 [Etherpad documentation](http://etherpad.org/doc/v1.5.7/) for an in-depth description of
 Etherpad Lite’s HTTP API.
 
+[![Build Status](https://travis-ci.org/travis-ci/travis-web.svg?branch=master)](https://travis-ci.org/travis-ci/travis-web)
+
 ### DOWNLOAD ###
 The jar file is available in [Maven Central](http://search.maven.org/#artifactdetails|net.gjerull.etherpad|etherpad_lite_client|1.2.13|jar).
 
