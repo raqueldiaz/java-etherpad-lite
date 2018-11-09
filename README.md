@@ -2,7 +2,7 @@ Java Etherpad Lite Client
 =========================
 
 [![Build Status](https://travis-ci.org/travis-ci/travis-web.svg?branch=master)](https://travis-ci.org/travis-ci/travis-web)
-[![Coverage Status](https://coveralls.io/repos/github/trautonen/coveralls-maven-plugin/badge.svg?branch=master)](https://coveralls.io/github/trautonen/coveralls-maven-plugin?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/raqueldiaz/java-etherpad-lite/badge.svg)](https://coveralls.io/github/raqueldiaz/java-etherpad-lite)
 
 A Java client for Etherpad Lite’s HTTP JSON API.
 Etherpad Lite is a collaborative editor provided by the Etherpad Foundation.
