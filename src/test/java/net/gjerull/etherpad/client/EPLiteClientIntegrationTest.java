@@ -52,11 +52,6 @@ public class EPLiteClientIntegrationTest {
 		client.checkToken();
 	}
 
-//	@Test
-//	public void validate_token() throws Exception {
-//		client.checkToken();
-//	}
-
 	@Test
 	public void create_and_delete_group() throws Exception {
 		mockServer.when(HttpRequest.request().withMethod("POST").withPath("/api/1.2.13/createGroup"))
