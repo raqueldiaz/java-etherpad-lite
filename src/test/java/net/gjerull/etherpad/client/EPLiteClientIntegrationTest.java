@@ -18,6 +18,11 @@ import org.mockserver.integration.ClientAndServer;
 import org.mockserver.model.HttpRequest;
 import org.mockserver.model.HttpResponse;
 
+import etm.core.configuration.BasicEtmConfigurator;
+import etm.core.configuration.EtmManager;
+import etm.core.monitor.EtmMonitor;
+import etm.core.renderer.SimpleTextRenderer;
+
 /**
  * Integration test for simple App.
  */
@@ -28,6 +33,8 @@ public class EPLiteClientIntegrationTest {
 
     /** The mock server. */
     private ClientAndServer mockServer;
+
+    private static EtmMonitor monitor = EtmManager.getEtmMonitor();
 
     /**
      * Useless testing as it depends on a specific API key TODO: Find a way to
@@ -40,6 +47,9 @@ public class EPLiteClientIntegrationTest {
         this.client = new EPLiteClient("http://localhost:9001",
                 "a04f17343b51afaa036a7428171dd873469cd85911ab43be0503d29d2acbbd58");
         mockServer = startClientAndServer(9001);
+        BasicEtmConfigurator.configure();
+        monitor = EtmManager.getEtmMonitor();
+        monitor.start();
     }
 
     /**
@@ -48,6 +58,8 @@ public class EPLiteClientIntegrationTest {
     @After
     public void tearDown() {
         mockServer.stop();
+        monitor.render(new SimpleTextRenderer());
+        monitor.stop();
     }
 
     /**

@@ -5,6 +5,10 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+import etm.core.configuration.EtmManager;
+import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
+
 /**
  * A class for easily executing an HTTP GET request.<br />
  * <br />
@@ -19,6 +23,9 @@ public class GETRequest implements Request {
 
     /** The url. */
     private final URL url;
+
+    /** The Constant etmMonitor. */
+    private static final EtmMonitor monitor = EtmManager.getEtmMonitor();
 
     /**
      * Instantiates a new GETRequest.
@@ -37,14 +44,21 @@ public class GETRequest implements Request {
      */
     @Override
     public final String send() throws Exception {
-        BufferedReader in = new BufferedReader(new InputStreamReader(
-                url.openStream(), StandardCharsets.UTF_8));
-        StringBuilder response = new StringBuilder();
-        String buffer;
-        while ((buffer = in.readLine()) != null) {
-            response.append(buffer);
+
+        EtmPoint point = monitor.createPoint("sendGETRequest");
+
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    url.openStream(), StandardCharsets.UTF_8));
+            StringBuilder response = new StringBuilder();
+            String buffer;
+            while ((buffer = in.readLine()) != null) {
+                response.append(buffer);
+            }
+            in.close();
+            return response.toString();
+        } finally {
+            point.collect();
         }
-        in.close();
-        return response.toString();
     }
 }

@@ -7,6 +7,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 
+import etm.core.configuration.EtmManager;
+import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
+
 /**
  * A class for easily executing an HTTP POST request.<br />
  * <br />
@@ -24,6 +28,9 @@ public class POSTRequest implements Request {
 
     /** The body. */
     private final String body;
+
+    /** The Constant etmMonitor. */
+    private static final EtmMonitor monitor = EtmManager.getEtmMonitor();
 
     /**
      * Instantiates a new POSTRequest.
@@ -44,22 +51,28 @@ public class POSTRequest implements Request {
      */
     @Override
     public final String send() throws Exception {
-        URLConnection con = this.url.openConnection();
-        con.setDoOutput(true);
 
-        OutputStreamWriter out = new OutputStreamWriter(con.getOutputStream(),
-                StandardCharsets.UTF_8);
-        out.write(this.body);
-        out.close();
+        EtmPoint point = monitor.createPoint("sendPOSTRequest");
+        try {
+            URLConnection con = this.url.openConnection();
+            con.setDoOutput(true);
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(
-                con.getInputStream(), StandardCharsets.UTF_8));
-        StringBuilder response = new StringBuilder();
-        String buffer;
-        while ((buffer = in.readLine()) != null) {
-            response.append(buffer);
+            OutputStreamWriter out = new OutputStreamWriter(
+                    con.getOutputStream(), StandardCharsets.UTF_8);
+            out.write(this.body);
+            out.close();
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    con.getInputStream(), StandardCharsets.UTF_8));
+            StringBuilder response = new StringBuilder();
+            String buffer;
+            while ((buffer = in.readLine()) != null) {
+                response.append(buffer);
+            }
+            in.close();
+            return response.toString();
+        } finally {
+            point.collect();
         }
-        in.close();
-        return response.toString();
     }
 }
